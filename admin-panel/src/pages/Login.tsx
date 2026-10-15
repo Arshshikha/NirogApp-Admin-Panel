@@ -26,7 +26,11 @@ export const Login: React.FC = () => {
 
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to authenticate. Please check your credentials.');
+      if (!err.response) {
+        setError(`Unable to connect to backend server (${api.defaults.baseURL || 'API'}). Please verify the server is running and reachable.`);
+      } else {
+        setError(err.response?.data?.error || 'Invalid credentials. Please check your email and password.');
+      }
     } finally {
       setLoading(false);
     }
